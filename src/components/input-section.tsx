@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import JsonInput from "./Input/json-input";
-import Button from "./Input/button";
+import Button from "./button";
 
 export default function InputSection() {
   const [jsonData, setJsonData] = useState<string>("");

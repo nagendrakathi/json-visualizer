@@ -1,6 +1,6 @@
 import React from "react";
 import SearchInput from "./Input/search-input";
-import Button from "./Input/button";
+import Button from "./button";
 
 export default function Visuals() {
   return (
