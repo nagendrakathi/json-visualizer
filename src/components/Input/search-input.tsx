@@ -5,7 +5,7 @@ export default function SearchInput() {
     <input
       type="text"
       className="text-foreground outline-none border-2 border-primary/30 rounded-lg bg-transparent p-2 w-1/3"
-      placeholder="(e.g., $.user.address.city, items[0].name)"
+      placeholder="($.user.address.city, items[0].name)"
     ></input>
   );
 }
