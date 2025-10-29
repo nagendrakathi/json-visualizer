@@ -12,6 +12,9 @@ export default function Visuals() {
         <SearchInput />
         <Button label="Search" classnames="ml-2"/>
       </div>
+      <div className="flex-1 w-full">
+        
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 export interface ButtonProps {
     label: string;
     classnames?: string;
+    handleClick?: () => void;
 }
 
 export interface JsonInputProps {
