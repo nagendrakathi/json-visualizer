@@ -1,9 +1,11 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Handle, Position, NodeProps } from "reactflow";
 import { TreeNodeData, NODE_COLORS } from "@/lib/generateTree";
+import toast from "react-hot-toast";
 
 function CustomNode({ data }: NodeProps<TreeNodeData>) {
-  const { label, nodeType, isHighlighted, path, isPrimitiveValue } = data;
+  const { label, nodeType, isHighlighted, path, isPrimitiveValue, value } = data;
+  const [isHovered, setIsHovered] = useState(false);
 
   const backgroundColor = isHighlighted
     ? NODE_COLORS.highlighted
@@ -16,8 +18,26 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
                           nodeType === 'array' || 
                           (nodeType === 'primitive' && !isPrimitiveValue); // Primitive key nodes have source handles
 
+  const handleClick = () => {
+    navigator.clipboard.writeText(path);
+    toast.success(`Copied: ${path}`);
+  };
+
+  const getValueDisplay = () => {
+    if (isPrimitiveValue) {
+      return String(value);
+    }
+    if (typeof value === 'object' && value !== null) {
+      return Array.isArray(value) ? `Array[${value.length}]` : 'Object';
+    }
+    return String(value);
+  };
+
   return (
     <div
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         background: backgroundColor,
         color: 'white',
@@ -28,11 +48,14 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
         fontWeight: '600',
         minWidth: '100px',
         textAlign: 'center',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-        transform: isHighlighted ? 'scale(1.1)' : 'scale(1)',
+        boxShadow: isHovered 
+          ? '0 4px 12px rgba(0,0,0,0.25)' 
+          : '0 2px 8px rgba(0,0,0,0.15)',
+        transform: isHighlighted ? 'scale(1.1)' : isHovered ? 'scale(1.05)' : 'scale(1)',
         transition: 'all 0.3s ease',
+        cursor: 'pointer',
+        position: 'relative',
       }}
-      title={`Path: ${path}\nType: ${nodeType}`}
     >
       {hasTargetHandle && (
         <Handle
@@ -48,6 +71,51 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
           position={Position.Bottom}
           style={{ background: '#9ca3af' }}
         />
+      )}
+      
+      {/* Hover Tooltip */}
+      {isHovered && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '-80px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#1f2937',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            zIndex: 1000,
+            pointerEvents: 'none',
+          }}
+        >
+          <div style={{ marginBottom: '4px' }}>
+            <strong>Path:</strong> {path}
+          </div>
+          <div>
+            <strong>Value:</strong> {getValueDisplay()}
+          </div>
+          <div style={{ fontSize: '10px', marginTop: '4px', opacity: 0.8 }}>
+            Click to copy path
+          </div>
+          {/* Tooltip arrow */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-6px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 0,
+              height: 0,
+              borderLeft: '6px solid transparent',
+              borderRight: '6px solid transparent',
+              borderTop: '6px solid #1f2937',
+            }}
+          />
+        </div>
       )}
     </div>
   );

@@ -162,7 +162,6 @@
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-/* React Flow Node Styles - Remove default outlines */
 .react-flow__node {
   outline: none !important;
 }
@@ -179,7 +178,6 @@
   outline: none !important;
 }
 
-/* Ensure node content is visible */
 .react-flow__node-default > div {
   display: block !important;
 }
