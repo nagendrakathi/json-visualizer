@@ -151,12 +151,7 @@ function ContainerInner() {
               </span>
             )}
           </div>
-          <div className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-            💡 Try searching: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">$.user</code>, 
-            <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded ml-1">name</code>, 
-            <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded ml-1">city</code>, or 
-            <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded ml-1">$.items[0]</code>
-          </div>
+          
 
           <div className="flex-1 w-full">
             <div className="h-[600px] border-2 border-gray-300 dark:border-gray-700 rounded-lg relative bg-gray-50 dark:bg-gray-900">
@@ -168,10 +163,14 @@ function ContainerInner() {
                 nodeTypes={nodeTypes}
                 fitView
                 attributionPosition="bottom-left"
+                style={{
+                  backgroundColor: isDark ? '#1f2937' : '#f9fafb',
+                }}
               >
-                <Background />
-                <Controls />
+                <Background color={isDark ? '#4b5563' : '#d1d5db'} />
+                <Controls color={isDark ? '#4b5563' : '#d1d5db'}/>
                 <MiniMap
+                color={isDark ? '#4b5563' : '#d1d5db'}
                   nodeColor={(node) => {
                     const nodeData = node.data as TreeNodeData;
                     if (nodeData.isHighlighted) return "#EF4444";
@@ -190,7 +189,7 @@ function ContainerInner() {
                   }}
                   className="bg-white! dark:bg-gray-800!"
                 />
-                <ZoomControls />
+                <ZoomControls/>
               </ReactFlow>
             </div>
           </div>

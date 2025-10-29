@@ -4,7 +4,7 @@ import { TreeNodeData, NODE_COLORS } from "@/lib/generateTree";
 import toast from "react-hot-toast";
 
 function CustomNode({ data }: NodeProps<TreeNodeData>) {
-  const { label, nodeType, isHighlighted, path, isPrimitiveValue, value } = data;
+  const { label, nodeType, isHighlighted, path, value } = data;
   const [isHovered, setIsHovered] = useState(false);
 
   const backgroundColor = isHighlighted
@@ -15,8 +15,7 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
   const hasTargetHandle = nodeType !== 'root';
   const hasSourceHandle = nodeType === 'root' || 
                           nodeType === 'object' || 
-                          nodeType === 'array' || 
-                          (nodeType === 'primitive' && !isPrimitiveValue); // Primitive key nodes have source handles
+                          nodeType === 'array';
 
   const handleClick = () => {
     navigator.clipboard.writeText(path);
@@ -24,7 +23,10 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
   };
 
   const getValueDisplay = () => {
-    if (isPrimitiveValue) {
+    if (nodeType === 'primitive') {
+      // For primitive nodes, display the actual value
+      if (value === null) return 'null';
+      if (typeof value === 'string') return `"${value}"`;
       return String(value);
     }
     if (typeof value === 'object' && value !== null) {

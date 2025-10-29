@@ -89,31 +89,8 @@ export const generateTreeNodes = (
         createNode(objValue[k], k, childPath, nodeId);
       });
     } else if (nodeType === 'primitive') {
-      const valueNodeId = `node-${nodeCounter++}`;
-      const displayValue = value === null ? 'null' : (typeof value === 'string' ? `"${value}"` : String(value));
-      
-      nodes.push({
-        id: valueNodeId,
-        type: 'custom',
-        position: { x: 0, y: 0 },
-        data: {
-          label: displayValue,
-          nodeType: 'primitive',
-          path: currentPath,
-          isHighlighted: false,
-          value,
-          isPrimitiveValue: true, // This is a value node
-        },
-      });
-
-      edges.push({
-        id: `edge-${nodeId}-${valueNodeId}`,
-        source: nodeId,
-        target: valueNodeId,
-        type: 'smoothstep',
-        animated: false,
-        style: { stroke: '#9ca3af', strokeWidth: 2 },
-      });
+      // Don't create a separate value node - just store the value in the key node
+      // The value will be displayed on hover
     }
 
     return nodeId;

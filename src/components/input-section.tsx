@@ -11,20 +11,7 @@ const SAMPLE_JSON = `{
       "city": "New York",
       "country": "USA"
     }
-  },
-  "items": [
-    {
-      "id": 1,
-      "name": "Laptop",
-      "price": 999.99
-    },
-    {
-      "id": 2,
-      "name": "Mouse",
-      "price": 29.99
-    }
-  ],
-  "active": true
+  }
 }`;
 
 export default function InputSection({
