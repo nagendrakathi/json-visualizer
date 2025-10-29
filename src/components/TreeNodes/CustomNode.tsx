@@ -11,7 +11,6 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
     ? NODE_COLORS.highlighted
     : NODE_COLORS[nodeType];
 
-  // Determine if this node should have handles
   const hasTargetHandle = nodeType !== 'root';
   const hasSourceHandle = nodeType === 'root' || 
                           nodeType === 'object' || 
@@ -24,7 +23,6 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
 
   const getValueDisplay = () => {
     if (nodeType === 'primitive') {
-      // For primitive nodes, display the actual value
       if (value === null) return 'null';
       if (typeof value === 'string') return `"${value}"`;
       return String(value);
@@ -75,7 +73,6 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
         />
       )}
       
-      {/* Hover Tooltip */}
       {isHovered && (
         <div
           style={{
@@ -103,7 +100,6 @@ function CustomNode({ data }: NodeProps<TreeNodeData>) {
           <div style={{ fontSize: '10px', marginTop: '4px', opacity: 0.8 }}>
             Click to copy path
           </div>
-          {/* Tooltip arrow */}
           <div
             style={{
               position: 'absolute',

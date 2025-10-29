@@ -89,8 +89,6 @@ export const generateTreeNodes = (
         createNode(objValue[k], k, childPath, nodeId);
       });
     } else if (nodeType === 'primitive') {
-      // Don't create a separate value node - just store the value in the key node
-      // The value will be displayed on hover
     }
 
     return nodeId;
@@ -107,11 +105,9 @@ export const calculateNodePositions = (
 ): Node<TreeNodeData>[] => {
   if (nodes.length === 0) return nodes;
 
-  // Build a tree structure from nodes and edges
   const childrenMap: Map<string, string[]> = new Map();
   const parentMap: Map<string, string> = new Map();
 
-  // Build parent-child relationships
   edges.forEach(edge => {
     if (!childrenMap.has(edge.source)) {
       childrenMap.set(edge.source, []);
@@ -120,11 +116,9 @@ export const calculateNodePositions = (
     parentMap.set(edge.target, edge.source);
   });
 
-  // Find root node
   const rootNode = nodes.find(n => !parentMap.has(n.id));
   if (!rootNode) return nodes;
 
-  // Build hierarchical structure for d3
   interface TreeNode {
     id: string;
     children?: TreeNode[];
@@ -143,7 +137,6 @@ export const calculateNodePositions = (
 
   const hierarchyData = buildHierarchy(rootNode.id);
 
-  // Create d3 hierarchy and apply tree layout
   const root = hierarchy(hierarchyData);
   const treeLayout = tree<TreeNode>()
     .nodeSize([HORIZONTAL_SPACING, VERTICAL_SPACING])
@@ -151,7 +144,6 @@ export const calculateNodePositions = (
 
   treeLayout(root);
 
-  // Create position map from d3 layout
   const positionMap = new Map<string, { x: number; y: number }>();
   root.each(node => {
     positionMap.set(node.data.id, { 
@@ -160,7 +152,6 @@ export const calculateNodePositions = (
     });
   });
 
-  // Apply positions to nodes
   const positionedNodes = nodes.map(node => {
     const pos = positionMap.get(node.id) || { x: 0, y: 0 };
     return {
@@ -172,12 +163,10 @@ export const calculateNodePositions = (
   return positionedNodes;
 };
 
-// Search functionality
 export const searchNodeByPath = (
   nodes: Node<TreeNodeData>[],
   searchPath: string
 ): Node<TreeNodeData>[] => {
-  // Normalize the search path - remove $ prefix if present
   let normalizedSearch = searchPath.trim();
   if (normalizedSearch.startsWith('$.')) {
     normalizedSearch = normalizedSearch.substring(2);
@@ -188,13 +177,11 @@ export const searchNodeByPath = (
   }
   
   return nodes.map(node => {
-    // Remove $ prefix from node path for comparison
     let nodePath = node.data.path;
     if (nodePath.startsWith('$.')) {
       nodePath = nodePath.substring(2);
     }
     
-    // Check for exact match or if the search is part of the path
     const isMatch = node.data.path === searchPath || 
                     nodePath === normalizedSearch ||
                     node.data.path.endsWith(`.${normalizedSearch}`) ||

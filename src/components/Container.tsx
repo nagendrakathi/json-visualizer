@@ -81,7 +81,6 @@ function ContainerInner() {
       setSearchMessage("Match found!");
       toast.success("Match found!");
 
-      // Center the view on the found node
       setTimeout(() => {
         setCenter(foundNode.position.x, foundNode.position.y, {
           zoom: 1.2,
@@ -98,7 +97,6 @@ function ContainerInner() {
     setSearchPath("");
     setSearchMessage("");
     
-    // Remove all highlights
     const clearedNodes = nodes.map(node => ({
       ...node,
       data: {
